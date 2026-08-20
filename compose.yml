@@ -1,0 +1,12 @@
+services:
+  frontend:
+    build:
+      context: .
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8083}
+        VITE_OIDC_AUTHORITY: ${VITE_OIDC_AUTHORITY:-http://localhost:18084/realms/contextpilot}
+        VITE_OIDC_CLIENT_ID: ${VITE_OIDC_CLIENT_ID:-contextpilot-web}
+        VITE_OIDC_SCOPE: ${VITE_OIDC_SCOPE:-openid profile email}
+    ports:
+      - "3000:8080"
+    restart: unless-stopped
