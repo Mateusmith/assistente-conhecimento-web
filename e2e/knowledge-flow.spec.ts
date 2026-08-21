@@ -9,7 +9,7 @@ async function entrarComoAna(pagina: import('@playwright/test').Page) {
   await expect(pagina).toHaveURL(/\/espacos/);
 }
 
-test('cria espaco, processa documento e responde com fonte', async ({ page }) => {
+test('cria espaco, processa documento e responde com fonte', async ({ page }, testInfo) => {
   test.setTimeout(90_000);
   await entrarComoAna(page);
   const nome = `Qualidade E2E ${Date.now()}`;
@@ -20,7 +20,7 @@ test('cria espaco, processa documento e responde com fonte', async ({ page }) =>
   await page.getByRole('button', { name: 'Criar espaco' }).click();
 
   await expect(page.getByRole('heading', { name: nome })).toBeVisible();
-  await page.screenshot({ path: 'docs/screenshots/dashboard-desktop.png', fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath('dashboard-e2e.png'), fullPage: true });
   await page.getByRole('link', { name: 'Documentos', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Documentos' })).toBeVisible();
   await page.getByRole('button', { name: 'Enviar documento' }).first().click();
@@ -37,7 +37,7 @@ test('cria espaco, processa documento e responde com fonte', async ({ page }) =>
   await expect(page.getByText(/30 dias corridos/i)).toBeVisible({ timeout: 30_000 });
   await page.getByRole('button', { name: 'Ver fontes utilizadas' }).click();
   await expect(page.getByText('Politica de reembolso E2E')).toBeVisible();
-  await page.screenshot({ path: 'docs/screenshots/chat-sources-desktop.png', fullPage: true });
+  await page.screenshot({ path: testInfo.outputPath('chat-e2e.png'), fullPage: true });
 
   await page.getByRole('link', { name: 'Administracao', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Administracao' })).toBeVisible();

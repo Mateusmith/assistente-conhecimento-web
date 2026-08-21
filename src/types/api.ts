@@ -165,10 +165,17 @@ export interface ResultadoCaso {
   detalhes: string;
 }
 
+export type EstadoExecucaoAvaliacao =
+  | 'PENDENTE'
+  | 'EXECUTANDO'
+  | 'CONCLUIDA'
+  | 'FALHOU'
+  | 'CANCELADA';
+
 export interface ExecucaoAvaliacao {
   id: Identificador;
   conjuntoId: Identificador;
-  estado: string;
+  estado: EstadoExecucaoAvaliacao;
   erro: string | null;
   totalCasos: number;
   casosProcessados: number;

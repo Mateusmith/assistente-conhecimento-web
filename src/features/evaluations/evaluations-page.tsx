@@ -22,6 +22,7 @@ import { useNotificacao } from '../../components/ui/notification';
 import { Status, tomDoEstado } from '../../components/ui/status-badge';
 import { mensagemDeErro } from '../../lib/api-client';
 import { formatarData, formatarMoedaUsd, formatarPercentual } from '../../lib/formatters';
+import { execucaoEstaAtiva, execucaoEstaConcluida } from './evaluation-state';
 
 export function PaginaAvaliacoes() {
   const { espacoId = '' } = useParams();
@@ -55,7 +56,7 @@ export function PaginaAvaliacoes() {
     queryFn: () => servico.listarExecucoes(espacoId, conjuntoId!),
     enabled: Boolean(conjuntoId),
     refetchInterval: (consulta) =>
-      consulta.state.data?.some((execucao) => ['AGENDADA', 'EM_EXECUCAO', 'PROCESSANDO'].includes(execucao.estado))
+      consulta.state.data?.some((execucao) => execucaoEstaAtiva(execucao.estado))
         ? 2000
         : false,
   });
@@ -159,7 +160,7 @@ export function PaginaAvaliacoes() {
             <section className="evaluation-command-bar">
               <div><strong>{conjuntos.data?.find((item) => item.id === conjuntoId)?.nome}</strong><span>{casos.data?.length ?? 0} casos cadastrados</span></div>
               <div className="evaluation-controls">
-                <label>Baseline<select value={baselineId} onChange={(evento) => definirBaselineId(evento.target.value)}><option value="">Sem comparacao</option>{execucoes.data?.filter((execucao) => execucao.estado === 'CONCLUIDO').map((execucao) => <option value={execucao.id} key={execucao.id}>{formatarData(execucao.finalizadaEm)}</option>)}</select></label>
+                <label>Baseline<select value={baselineId} onChange={(evento) => definirBaselineId(evento.target.value)}><option value="">Sem comparacao</option>{execucoes.data?.filter((execucao) => execucaoEstaConcluida(execucao.estado)).map((execucao) => <option value={execucao.id} key={execucao.id}>{formatarData(execucao.finalizadaEm)}</option>)}</select></label>
                 <Botao icone={Plus} onClick={() => definirModalCaso(true)} disabled={!conjuntoId}>Caso</Botao>
                 <Botao variante="primario" icone={Play} onClick={() => executar.mutate()} carregando={executar.isPending} disabled={!conjuntoId || !casos.data?.length}>Executar</Botao>
               </div>
@@ -177,7 +178,7 @@ export function PaginaAvaliacoes() {
                 <section className="section-panel evaluation-progress-panel">
                   <header className="section-header"><div><h2>Execucao selecionada</h2><p>Iniciada em {formatarData(execucaoAtual.iniciadaEm)}</p></div><Status tom={tomDoEstado(execucaoAtual.estado)}>{execucaoAtual.estado}</Status></header>
                   <div className="run-progress"><progress value={execucaoAtual.casosProcessados} max={Math.max(execucaoAtual.totalCasos, 1)} /><span>{execucaoAtual.casosProcessados} de {execucaoAtual.totalCasos} casos</span></div>
-                  {['AGENDADA', 'EM_EXECUCAO', 'PROCESSANDO'].includes(execucaoAtual.estado) && <Botao variante="perigo" icone={CircleStop} onClick={() => cancelar.mutate(execucaoAtual.id)} carregando={cancelar.isPending}>Cancelar execucao</Botao>}
+                  {execucaoEstaAtiva(execucaoAtual.estado) && <Botao variante="perigo" icone={CircleStop} onClick={() => cancelar.mutate(execucaoAtual.id)} carregando={cancelar.isPending}>Cancelar execucao</Botao>}
                   {execucaoAtual.erro && <p className="cell-error">{execucaoAtual.erro}</p>}
                 </section>
 

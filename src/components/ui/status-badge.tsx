@@ -9,8 +9,8 @@ export function Status({ tom = 'neutro', children }: PropriedadesStatus) {
 }
 
 export function tomDoEstado(estado: string): PropriedadesStatus['tom'] {
-  if (['PRONTO', 'ATIVO', 'CONCLUIDO', 'LIMPO', 'APROVADO'].includes(estado)) return 'sucesso';
-  if (['PENDENTE', 'PROCESSANDO', 'CONSTRUINDO', 'AGENDADA', 'EM_EXECUCAO'].includes(estado)) return 'aviso';
+  if (['PRONTO', 'ATIVO', 'CONCLUIDO', 'CONCLUIDA', 'LIMPO', 'APROVADO'].includes(estado)) return 'sucesso';
+  if (['PENDENTE', 'PROCESSANDO', 'CONSTRUINDO', 'AGENDADA', 'EM_EXECUCAO', 'EXECUTANDO'].includes(estado)) return 'aviso';
   if (['FALHOU', 'CANCELADA', 'REPROVADO'].includes(estado)) return 'erro';
   if (['RESTRITO', 'CURADOR'].includes(estado)) return 'informacao';
   return 'neutro';
