@@ -1,5 +1,11 @@
 # Assistente de Conhecimento Web
 
+[![CI](https://github.com/Mateusmith/assistente-conhecimento-web/actions/workflows/ci.yml/badge.svg)](https://github.com/Mateusmith/assistente-conhecimento-web/actions/workflows/ci.yml)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![TypeScript 6](https://img.shields.io/badge/TypeScript-6-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite 8](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 Interface web do [Assistente de Conhecimento](https://github.com/Mateusmith/assistente-conhecimento), uma plataforma privada de busca e perguntas sobre documentos corporativos.
 
 O front-end permite enviar documentos, acompanhar o processamento, conversar com a base autorizada e conferir exatamente quais fontes sustentam cada resposta. Gestores também podem administrar membros, permissões, avaliações, índices de busca e auditoria sem depender de chamadas manuais à API.
